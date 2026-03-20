@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Gold — Finanzas</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #C9A84C; --gold-light: #E8C97A; --gold-dark: #A07830;
+    --black: #0A0A0A; --dark: #111111; --dark2: #1A1A1A; --dark3: #242424;
+    --white: #FAFAF8; --muted: #888880;
+    --green: #4CAF7D; --red: #E05555; --blue: #4C8FC9; --purple: #9B4CC9;
+    --azure: #4C8FC9; --appt: #C94C8F; --fit: #4CC98F;
+  }
+  body { font-family: 'Outfit', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    background: var(--dark); border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 18px 32px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-hex { width: 30px; height: 30px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); }
+  .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 3px; }
+  .logo-text span { color: var(--gold); }
+  .logo-sub { font-size: 9px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-left: 4px; align-self: flex-end; margin-bottom: 2px; }
+  .header-right { display: flex; gap: 12px; align-items: center; }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex; gap: 2px; padding: 20px 32px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .tab {
+    padding: 10px 24px; font-size: 12px; font-weight: 500; letter-spacing: 1px;
+    cursor: pointer; border-bottom: 2px solid transparent; color: var(--muted);
+    transition: all 0.2s; text-transform: uppercase;
+  }
+  .tab:hover { color: var(--white); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* BUSINESS FILTER */
+  .biz-filter {
+    display: flex; gap: 8px; padding: 20px 32px 0; flex-wrap: wrap;
+  }
+  .biz-btn {
+    padding: 6px 16px; font-size: 11px; font-weight: 500; letter-spacing: 1px;
+    cursor: pointer; border: 1px solid rgba(255,255,255,0.08);
+    background: transparent; color: var(--muted); transition: all 0.2s;
+    text-transform: uppercase; font-family: 'Outfit', sans-serif;
+  }
+  .biz-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+  .biz-btn.active { color: var(--black); border-color: transparent; }
+  .biz-btn[data-biz="todos"].active { background: var(--gold); }
+  .biz-btn[data-biz="Azure Gold Studio"].active { background: var(--azure); }
+  .biz-btn[data-biz="AppointmentsDay"].active { background: var(--appt); }
+  .biz-btn[data-biz="FitCRM Pro"].active { background: var(--fit); color: var(--black); }
+
+  /* CONTENT */
+  .content { padding: 24px 32px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* SUMMARY CARDS */
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px;
+  }
+  .sum-card {
+    background: var(--dark2); padding: 20px 24px;
+    border-top: 2px solid rgba(201,168,76,0.2);
+  }
+  .sum-card.income { border-top-color: var(--green); }
+  .sum-card.expense { border-top-color: var(--red); }
+  .sum-card.profit { border-top-color: var(--gold); }
+  .sum-card.tax { border-top-color: var(--purple); }
+  .sum-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .sum-amount { font-family: 'Bebas Neue', sans-serif; font-size: 38px; line-height: 1; }
+  .sum-card.income .sum-amount { color: var(--green); }
+  .sum-card.expense .sum-amount { color: var(--red); }
+  .sum-card.profit .sum-amount { color: var(--gold); }
+  .sum-card.tax .sum-amount { color: var(--purple); }
+  .sum-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* BUSINESS BREAKDOWN */
+  .biz-breakdown {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;
+  }
+  .biz-card {
+    background: var(--dark2); padding: 20px 24px;
+    border-left: 3px solid transparent;
+  }
+  .biz-card[data-biz="Azure Gold Studio"] { border-left-color: var(--azure); }
+  .biz-card[data-biz="AppointmentsDay"] { border-left-color: var(--appt); }
+  .biz-card[data-biz="FitCRM Pro"] { border-left-color: var(--fit); }
+  .biz-card-name { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .biz-card-income { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--green); }
+  .biz-card-detail { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+  }
+  .section-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { border-bottom: 1px solid rgba(201,168,76,0.15); }
+  th { text-align: left; padding: 10px 14px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 500; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
+  tbody tr:hover { background: var(--dark2); }
+  td { padding: 12px 14px; font-size: 13px; vertical-align: middle; }
+
+  .biz-pill {
+    padding: 3px 10px; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .pill-azure { background: rgba(76,143,201,0.15); color: var(--azure); }
+  .pill-appt { background: rgba(201,76,143,0.15); color: var(--appt); }
+  .pill-fit { background: rgba(76,201,143,0.15); color: var(--fit); }
+
+  .amount-income { color: var(--green); font-weight: 600; }
+  .amount-expense { color: var(--red); font-weight: 600; }
+
+  .status-paid { background: rgba(76,175,125,0.15); color: var(--green); padding: 3px 10px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .status-pending { background: rgba(232,201,76,0.15); color: #E8C94C; padding: 3px 10px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .status-partial { background: rgba(76,143,201,0.15); color: var(--blue); padding: 3px 10px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .action-btn { width: 26px; height: 26px; background: var(--dark3); border: none; cursor: pointer; font-size: 12px; transition: background 0.2s; }
+  .action-btn:hover { background: rgba(201,168,76,0.2); }
+
+  /* BTN */
+  .btn { padding: 9px 20px; font-size: 12px; font-weight: 500; letter-spacing: 1px; border: none; cursor: pointer; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+  .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--black); }
+  .btn-gold:hover { opacity: 0.85; }
+  .btn-outline { background: transparent; border: 1px solid rgba(201,168,76,0.3); color: var(--gold); }
+  .btn-outline:hover { background: rgba(201,168,76,0.08); }
+  .btn-sm { padding: 6px 14px; font-size: 11px; }
+
+  /* P&L */
+  .pl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .pl-card { background: var(--dark2); padding: 24px; }
+  .pl-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .pl-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
+  .pl-row:last-child { border-bottom: none; }
+  .pl-row.total { border-top: 1px solid rgba(201,168,76,0.2); padding-top: 12px; font-weight: 600; font-size: 15px; }
+  .pl-label { color: var(--muted); }
+  .pl-value-green { color: var(--green); font-weight: 500; }
+  .pl-value-red { color: var(--red); font-weight: 500; }
+  .pl-value-gold { color: var(--gold); font-weight: 600; }
+
+  /* TAX */
+  .tax-card { background: var(--dark2); padding: 28px; margin-bottom: 16px; }
+  .tax-rate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+  .tax-rate-card { background: var(--dark3); padding: 16px; text-align: center; }
+  .tax-rate-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .tax-rate-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; }
+  .tax-note { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .tax-bar { height: 6px; background: var(--dark3); margin-top: 16px; }
+  .tax-bar-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--gold)); transition: width 0.5s; }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 500; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: var(--dark2); border: 1px solid rgba(201,168,76,0.2); width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.25s; }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-header { padding: 22px 26px 18px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--gold); }
+  .modal-close { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
+  .modal-close:hover { color: var(--white); }
+  .modal-body { padding: 22px 26px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid .full { grid-column: 1 / -1; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .form-group input, .form-group select, .form-group textarea { background: var(--dark3); border: 1px solid rgba(255,255,255,0.08); color: var(--white); padding: 9px 12px; font-size: 13px; font-family: 'Outfit', sans-serif; outline: none; transition: border-color 0.2s; resize: none; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(201,168,76,0.5); }
+  .form-group select option { background: var(--dark3); }
+  .modal-footer { padding: 14px 26px 22px; display: flex; gap: 10px; justify-content: flex-end; }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--green); color: white; padding: 11px 22px; font-size: 13px; font-weight: 500; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 768px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .biz-breakdown { grid-template-columns: 1fr; }
+    .pl-grid { grid-template-columns: 1fr; }
+    .tax-rate-grid { grid-template-columns: 1fr; }
+    header, .nav-tabs, .biz-filter, .content { padding-left: 16px; padding-right: 16px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid .full { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-hex"></div>
+    <div class="logo-text">AZURE <span>GOLD</span></div>
+    <div class="logo-sub">Finanzas</div>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+  </div>
+</header>
+
+<div class="nav-tabs">
+  <div class="tab active" onclick="showPage('dashboard', this)">Dashboard</div>
+  <div class="tab" onclick="showPage('ingresos', this)">Ingresos</div>
+  <div class="tab" onclick="showPage('gastos', this)">Gastos</div>
+  <div class="tab" onclick="showPage('pl', this)">P&L</div>
+  <div class="tab" onclick="showPage('impuestos', this)">Impuestos</div>
+</div>
+
+<div class="biz-filter">
+  <button class="biz-btn active" data-biz="todos" onclick="filterBiz('todos', this)">Todos</button>
+  <button class="biz-btn" data-biz="Azure Gold Studio" onclick="filterBiz('Azure Gold Studio', this)">Azure Gold Studio</button>
+  <button class="biz-btn" data-biz="AppointmentsDay" onclick="filterBiz('AppointmentsDay', this)">AppointmentsDay</button>
+  <button class="biz-btn" data-biz="FitCRM Pro" onclick="filterBiz('FitCRM Pro', this)">FitCRM Pro</button>
+</div>
+
+<div class="content">
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="summary-grid" id="summaryGrid"></div>
+    <div class="biz-breakdown" id="bizBreakdown"></div>
+    <div class="section-header">
+      <div class="section-title">Últimas transacciones</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Descripción</th><th>Negocio</th><th>Tipo</th><th>Monto</th><th>Estado</th></tr></thead>
+        <tbody id="recentBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INGRESOS -->
+  <div class="page" id="page-ingresos">
+    <div class="section-header">
+      <div class="section-title">Ingresos por cliente / proyecto</div>
+      <button class="btn btn-gold btn-sm" onclick="openModal('ingreso')">+ Agregar Ingreso</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Cliente</th><th>Proyecto / Servicio</th><th>Negocio</th><th>Monto</th><th>Estado</th><th>Notas</th><th></th></tr></thead>
+        <tbody id="ingresosBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GASTOS -->
+  <div class="page" id="page-gastos">
+    <div class="section-header">
+      <div class="section-title">Gastos operativos</div>
+      <button class="btn btn-gold btn-sm" onclick="openModal('gasto')">+ Agregar Gasto</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Descripción</th><th>Categoría</th><th>Negocio</th><th>Monto</th><th>Notas</th><th></th></tr></thead>
+        <tbody id="gastosBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- P&L -->
+  <div class="page" id="page-pl">
+    <div class="pl-grid" id="plGrid"></div>
+  </div>
+
+  <!-- IMPUESTOS -->
+  <div class="page" id="page-impuestos">
+    <div id="taxContent"></div>
+  </div>
+
+</div>
+
+<!-- MODAL INGRESO -->
+<div class="modal-overlay" id="modalIngreso">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nuevo Ingreso</div>
+      <button class="modal-close" onclick="closeModal('modalIngreso')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Fecha</label><input type="date" id="iDate"></div>
+        <div class="form-group"><label>Negocio</label>
+          <select id="iBiz">
+            <option>Azure Gold Studio</option>
+            <option>AppointmentsDay</option>
+            <option>FitCRM Pro</option>
+          </select>
+        </div>
+        <div class="form-group full"><label>Cliente</label><input type="text" id="iClient" placeholder="Nombre del cliente"></div>
+        <div class="form-group full"><label>Proyecto / Servicio</label><input type="text" id="iProject" placeholder="Web Professional, Mantenimiento..."></div>
+        <div class="form-group"><label>Monto ($)</label><input type="number" id="iAmount" placeholder="1800"></div>
+        <div class="form-group"><label>Estado</label>
+          <select id="iStatus">
+            <option value="pagado">Pagado</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="parcial">Pago parcial</option>
+          </select>
+        </div>
+        <div class="form-group full"><label>Notas</label><textarea id="iNotes" rows="2" placeholder="Detalles adicionales..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalIngreso')">Cancelar</button>
+      <button class="btn btn-gold" onclick="saveIngreso()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GASTO -->
+<div class="modal-overlay" id="modalGasto">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nuevo Gasto</div>
+      <button class="modal-close" onclick="closeModal('modalGasto')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Fecha</label><input type="date" id="gDate"></div>
+        <div class="form-group"><label>Negocio</label>
+          <select id="gBiz">
+            <option>Azure Gold Studio</option>
+            <option>AppointmentsDay</option>
+            <option>FitCRM Pro</option>
+          </select>
+        </div>
+        <div class="form-group full"><label>Descripción</label><input type="text" id="gDesc" placeholder="Hosting, dominio, software..."></div>
+        <div class="form-group"><label>Categoría</label>
+          <select id="gCat">
+            <option>Hosting / Dominio</option>
+            <option>Software / Tools</option>
+            <option>Marketing</option>
+            <option>Diseño</option>
+            <option>Educación</option>
+            <option>Servicios profesionales</option>
+            <option>Equipos</option>
+            <option>Otros</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Monto ($)</label><input type="number" id="gAmount" placeholder="50"></div>
+        <div class="form-group full"><label>Notas</label><textarea id="gNotes" rows="2" placeholder="Detalles..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalGasto')">Cancelar</button>
+      <button class="btn btn-gold" onclick="saveGasto()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let currentBiz = 'todos';
+  let editingIngreso = null;
+  let editingGasto = null;
+
+  let data = JSON.parse(localStorage.getItem('azuregold_fin') || 'null');
+  if (!data) {
+    data = {
+      ingresos: [
+        { id: 1, date: '2026-03-01', biz: 'Azure Gold Studio', client: 'Demo Cliente', project: 'Web Professional', amount: 1800, status: 'pagado', notes: '' },
+        { id: 2, date: '2026-03-10', biz: 'AppointmentsDay', client: 'Salon Bella NJ', project: 'Suscripción mensual', amount: 49, status: 'pagado', notes: '' },
+        { id: 3, date: '2026-03-15', biz: 'FitCRM Pro', client: 'Coach Maria', project: 'Plan mensual', amount: 39, status: 'pagado', notes: '' },
+      ],
+      gastos: [
+        { id: 1, date: '2026-03-01', biz: 'Azure Gold Studio', desc: 'Hostinger Business', cat: 'Hosting / Dominio', amount: 8, notes: 'Hosting mensual' },
+        { id: 2, date: '2026-03-01', biz: 'Azure Gold Studio', desc: 'Dominio azuregoldstudio.com', cat: 'Hosting / Dominio', amount: 1, notes: 'Costo mensual prorrateado' },
+        { id: 3, date: '2026-03-05', biz: 'AppointmentsDay', desc: 'Firebase plan Blaze', cat: 'Software / Tools', amount: 15, notes: '' },
+        { id: 4, date: '2026-03-05', biz: 'FitCRM Pro', desc: 'Vercel Pro', cat: 'Hosting / Dominio', amount: 20, notes: '' },
+      ]
+    };
+    save();
+  }
+
+  function save() {
+    localStorage.setItem('azuregold_fin', JSON.stringify(data));
+    renderAll();
+  }
+
+  function filterBiz(biz, el) {
+    currentBiz = biz;
+    document.querySelectorAll('.biz-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    renderAll();
+  }
+
+  function getFiltered() {
+    const ingresos = currentBiz === 'todos' ? data.ingresos : data.ingresos.filter(i => i.biz === currentBiz);
+    const gastos = currentBiz === 'todos' ? data.gastos : data.gastos.filter(g => g.biz === currentBiz);
+    return { ingresos, gastos };
+  }
+
+  function totalIncome(items) { return items.reduce((a, i) => a + (i.amount || 0), 0); }
+  function totalExpense(items) { return items.reduce((a, i) => a + (i.amount || 0), 0); }
+  function fmt(n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+
+  function bizColor(biz) {
+    if (biz === 'Azure Gold Studio') return 'pill-azure';
+    if (biz === 'AppointmentsDay') return 'pill-appt';
+    return 'pill-fit';
+  }
+
+  function statusBadge(s) {
+    const map = { pagado: 'status-paid', pendiente: 'status-pending', parcial: 'status-partial' };
+    const label = { pagado: 'Pagado', pendiente: 'Pendiente', parcial: 'Parcial' };
+    return `<span class="${map[s] || 'status-pending'}">${label[s] || s}</span>`;
+  }
+
+  function renderAll() {
+    renderDashboard();
+    renderIngresos();
+    renderGastos();
+    renderPL();
+    renderTax();
+  }
+
+  function renderDashboard() {
+    const { ingresos, gastos } = getFiltered();
+    const inc = totalIncome(ingresos);
+    const exp = totalExpense(gastos);
+    const profit = inc - exp;
+    const tax = profit > 0 ? profit * 0.25 : 0;
+
+    document.getElementById('summaryGrid').innerHTML = `
+      <div class="sum-card income"><div class="sum-label">💰 Ingresos</div><div class="sum-amount">${fmt(inc)}</div><div class="sum-sub">${ingresos.length} transacciones</div></div>
+      <div class="sum-card expense"><div class="sum-label">💸 Gastos</div><div class="sum-amount">${fmt(exp)}</div><div class="sum-sub">${gastos.length} transacciones</div></div>
+      <div class="sum-card profit"><div class="sum-label">📈 Ganancia Neta</div><div class="sum-amount">${fmt(profit)}</div><div class="sum-sub">Margen: ${inc > 0 ? Math.round((profit/inc)*100) : 0}%</div></div>
+      <div class="sum-card tax"><div class="sum-label">🏛 Est. Impuestos</div><div class="sum-amount">${fmt(tax)}</div><div class="sum-sub">~25% tasa estimada</div></div>
+    `;
+
+    const bizNames = ['Azure Gold Studio', 'AppointmentsDay', 'FitCRM Pro'];
+    document.getElementById('bizBreakdown').innerHTML = bizNames.map(biz => {
+      const bi = data.ingresos.filter(i => i.biz === biz);
+      const bg = data.gastos.filter(g => g.biz === biz);
+      const binc = totalIncome(bi); const bexp = totalExpense(bg);
+      return `<div class="biz-card" data-biz="${biz}">
+        <div class="biz-card-name">${biz}</div>
+        <div class="biz-card-income">${fmt(binc)}</div>
+        <div class="biz-card-detail">Gastos: ${fmt(bexp)} · Neto: ${fmt(binc - bexp)}</div>
+      </div>`;
+    }).join('');
+
+    const all = [
+      ...data.ingresos.map(i => ({...i, tipo: 'ingreso'})),
+      ...data.gastos.map(g => ({...g, tipo: 'gasto'}))
+    ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 8);
+
+    document.getElementById('recentBody').innerHTML = all.map(t => `
+      <tr>
+        <td>${t.date}</td>
+        <td>${t.tipo === 'ingreso' ? (t.client + ' — ' + t.project) : t.desc}</td>
+        <td><span class="biz-pill ${bizColor(t.biz)}">${t.biz}</span></td>
+        <td>${t.tipo === 'ingreso' ? '📥 Ingreso' : '📤 Gasto'}</td>
+        <td class="${t.tipo === 'ingreso' ? 'amount-income' : 'amount-expense'}">${t.tipo === 'ingreso' ? '+' : '-'}${fmt(t.amount)}</td>
+        <td>${t.tipo === 'ingreso' ? statusBadge(t.status) : '—'}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderIngresos() {
+    const { ingresos } = getFiltered();
+    document.getElementById('ingresosBody').innerHTML = ingresos.length === 0
+      ? '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:40px">No hay ingresos registrados.</td></tr>'
+      : ingresos.map(i => `
+      <tr>
+        <td>${i.date}</td>
+        <td style="font-weight:500">${i.client}</td>
+        <td>${i.project}</td>
+        <td><span class="biz-pill ${bizColor(i.biz)}">${i.biz}</span></td>
+        <td class="amount-income">${fmt(i.amount)}</td>
+        <td>${statusBadge(i.status)}</td>
+        <td style="color:var(--muted);font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.notes || '—'}</td>
+        <td><button class="action-btn" onclick="deleteIngreso(${i.id})">🗑️</button></td>
+      </tr>`).join('');
+  }
+
+  function renderGastos() {
+    const { gastos } = getFiltered();
+    document.getElementById('gastosBody').innerHTML = gastos.length === 0
+      ? '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:40px">No hay gastos registrados.</td></tr>'
+      : gastos.map(g => `
+      <tr>
+        <td>${g.date}</td>
+        <td style="font-weight:500">${g.desc}</td>
+        <td><span style="font-size:11px;color:var(--muted)">${g.cat}</span></td>
+        <td><span class="biz-pill ${bizColor(g.biz)}">${g.biz}</span></td>
+        <td class="amount-expense">-${fmt(g.amount)}</td>
+        <td style="color:var(--muted);font-size:12px">${g.notes || '—'}</td>
+        <td><button class="action-btn" onclick="deleteGasto(${g.id})">🗑️</button></td>
+      </tr>`).join('');
+  }
+
+  function renderPL() {
+    const bizNames = ['Azure Gold Studio', 'AppointmentsDay', 'FitCRM Pro'];
+    const { ingresos, gastos } = getFiltered();
+    const totalInc = totalIncome(ingresos);
+    const totalExp = totalExpense(gastos);
+    const totalProfit = totalInc - totalExp;
+
+    // Categories
+    const cats = [...new Set(data.gastos.map(g => g.cat))];
+    const catRows = cats.map(cat => {
+      const catExp = gastos.filter(g => g.cat === cat).reduce((a, g) => a + g.amount, 0);
+      return catExp > 0 ? `<div class="pl-row"><span class="pl-label">${cat}</span><span class="pl-value-red">-${fmt(catExp)}</span></div>` : '';
+    }).join('');
+
+    document.getElementById('plGrid').innerHTML = `
+      <div class="pl-card">
+        <div class="pl-title">Estado de Resultados</div>
+        <div class="pl-row"><span class="pl-label">Ingresos totales</span><span class="pl-value-green">${fmt(totalInc)}</span></div>
+        <div class="pl-row"><span class="pl-label">Gastos totales</span><span class="pl-value-red">-${fmt(totalExp)}</span></div>
+        <div class="pl-row total"><span>Ganancia Neta</span><span class="pl-value-gold">${fmt(totalProfit)}</span></div>
+        <div class="pl-row" style="margin-top:8px"><span class="pl-label">Margen de ganancia</span><span style="color:var(--white)">${totalInc > 0 ? Math.round((totalProfit/totalInc)*100) : 0}%</span></div>
+      </div>
+      <div class="pl-card">
+        <div class="pl-title">Desglose de Gastos por Categoría</div>
+        ${catRows || '<div style="color:var(--muted);font-size:13px">Sin gastos registrados</div>'}
+      </div>
+      ${bizNames.map(biz => {
+        const bi = data.ingresos.filter(i => i.biz === biz);
+        const bg = data.gastos.filter(g => g.biz === biz);
+        const binc = totalIncome(bi); const bexp = totalExpense(bg); const bnet = binc - bexp;
+        return `<div class="pl-card">
+          <div class="pl-title">${biz}</div>
+          <div class="pl-row"><span class="pl-label">Ingresos</span><span class="pl-value-green">${fmt(binc)}</span></div>
+          <div class="pl-row"><span class="pl-label">Gastos</span><span class="pl-value-red">-${fmt(bexp)}</span></div>
+          <div class="pl-row total"><span>Neto</span><span class="${bnet >= 0 ? 'pl-value-gold' : 'pl-value-red'}">${fmt(bnet)}</span></div>
+        </div>`;
+      }).join('')}
+    `;
+  }
+
+  function renderTax() {
+    const { ingresos, gastos } = getFiltered();
+    const inc = totalIncome(ingresos);
+    const exp = totalExpense(gastos);
+    const profit = inc - exp;
+    const selfEmploy = profit > 0 ? profit * 0.153 : 0;
+    const federal = profit > 0 ? profit * 0.12 : 0;
+    const quarterly = (selfEmploy + federal) / 4;
+    const pct = profit > 0 ? Math.round(((selfEmploy + federal) / profit) * 100) : 0;
+
+    document.getElementById('taxContent').innerHTML = `
+      <div class="tax-card">
+        <div class="section-title" style="margin-bottom:16px">Estimado de Impuestos — Self Employed USA</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+          <div><div class="sum-label" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Ganancia gravable</div><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white)">${fmt(profit)}</div></div>
+          <div><div class="sum-label" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Pago trimestral est.</div><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--purple)">${fmt(quarterly)}</div></div>
+        </div>
+        <div class="tax-bar"><div class="tax-bar-fill" style="width:${Math.min(pct, 100)}%"></div></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Carga fiscal estimada: ${pct}% de tu ganancia neta</div>
+        <div class="tax-rate-grid">
+          <div class="tax-rate-card">
+            <div class="tax-rate-label">Self-Employment Tax</div>
+            <div class="tax-rate-val" style="color:var(--purple)">${fmt(selfEmploy)}</div>
+            <div class="tax-note">15.3% sobre ganancia neta</div>
+          </div>
+          <div class="tax-rate-card">
+            <div class="tax-rate-label">Federal Income Tax</div>
+            <div class="tax-rate-val" style="color:var(--blue)">${fmt(federal)}</div>
+            <div class="tax-note">~12% estimado</div>
+          </div>
+          <div class="tax-rate-card">
+            <div class="tax-rate-label">Total estimado</div>
+            <div class="tax-rate-val" style="color:var(--gold)">${fmt(selfEmploy + federal)}</div>
+            <div class="tax-note">Apartado recomendado</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;padding:16px;background:var(--dark3);font-size:12px;color:var(--muted);line-height:1.7">
+          ⚠️ <strong style="color:var(--white)">Aviso:</strong> Estos son estimados educativos basados en tasas generales para self-employed en USA. Consulta con un CPA para tu situación específica. Los pagos trimestrales al IRS vencen en: <strong style="color:var(--gold)">Abril 15 · Junio 15 · Septiembre 15 · Enero 15</strong>
+        </div>
+      </div>
+    `;
+  }
+
+  function openModal(type) {
+    const today = new Date().toISOString().split('T')[0];
+    if (type === 'ingreso') {
+      document.getElementById('iDate').value = today;
+      document.getElementById('iAmount').value = '';
+      document.getElementById('iClient').value = '';
+      document.getElementById('iProject').value = '';
+      document.getElementById('iNotes').value = '';
+      document.getElementById('modalIngreso').classList.add('open');
+    } else {
+      document.getElementById('gDate').value = today;
+      document.getElementById('gAmount').value = '';
+      document.getElementById('gDesc').value = '';
+      document.getElementById('gNotes').value = '';
+      document.getElementById('modalGasto').classList.add('open');
+    }
+  }
+
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  function saveIngreso() {
+    const item = {
+      id: Date.now(),
+      date: document.getElementById('iDate').value,
+      biz: document.getElementById('iBiz').value,
+      client: document.getElementById('iClient').value || 'Cliente',
+      project: document.getElementById('iProject').value || 'Proyecto',
+      amount: parseFloat(document.getElementById('iAmount').value) || 0,
+      status: document.getElementById('iStatus').value,
+      notes: document.getElementById('iNotes').value,
+    };
+    data.ingresos.push(item);
+    save(); closeModal('modalIngreso');
+    showToast('✓ Ingreso registrado');
+  }
+
+  function saveGasto() {
+    const item = {
+      id: Date.now(),
+      date: document.getElementById('gDate').value,
+      biz: document.getElementById('gBiz').value,
+      desc: document.getElementById('gDesc').value || 'Gasto',
+      cat: document.getElementById('gCat').value,
+      amount: parseFloat(document.getElementById('gAmount').value) || 0,
+      notes: document.getElementById('gNotes').value,
+    };
+    data.gastos.push(item);
+    save(); closeModal('modalGasto');
+    showToast('✓ Gasto registrado');
+  }
+
+  function deleteIngreso(id) {
+    if (confirm('¿Eliminar este ingreso?')) { data.ingresos = data.ingresos.filter(i => i.id !== id); save(); showToast('Ingreso eliminado'); }
+  }
+  function deleteGasto(id) {
+    if (confirm('¿Eliminar este gasto?')) { data.gastos = data.gastos.filter(g => g.id !== id); save(); showToast('Gasto eliminado'); }
+  }
+
+  function showPage(page, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function exportCSV() {
+    const rows = [
+      ['Tipo','Fecha','Negocio','Cliente/Desc','Proyecto/Cat','Monto','Estado','Notas'],
+      ...data.ingresos.map(i => ['Ingreso', i.date, i.biz, i.client, i.project, i.amount, i.status, i.notes]),
+      ...data.gastos.map(g => ['Gasto', g.date, g.biz, g.desc, g.cat, g.amount, '', g.notes]),
+    ];
+    const csv = rows.map(r => r.map(v => `"${v||''}"`).join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+    a.download = 'azure-gold-finanzas.csv'; a.click();
+    showToast('✓ CSV exportado');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+  });
+
+  renderAll();
+</script>
+</body>
+</html>

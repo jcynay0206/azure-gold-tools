@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Gold CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #A07830;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark2: #1A1A1A;
+    --dark3: #242424;
+    --white: #FAFAF8;
+    --muted: #888880;
+    --green: #4CAF7D;
+    --yellow: #E8C94C;
+    --blue: #4C8FC9;
+    --red: #C94C4C;
+    --purple: #9B4CC9;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--dark);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 20px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-hex {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: 3px;
+  }
+  .logo-text span { color: var(--gold); }
+  .logo-sub {
+    font-size: 10px; letter-spacing: 2px; color: var(--muted);
+    text-transform: uppercase; margin-left: 4px; align-self: flex-end; margin-bottom: 2px;
+  }
+
+  .header-actions {
+    display: flex; gap: 12px; align-items: center;
+  }
+
+  .btn {
+    padding: 9px 20px; font-size: 12px; font-weight: 500;
+    letter-spacing: 1px; border: none; cursor: pointer;
+    transition: all 0.2s; font-family: 'Outfit', sans-serif;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--black);
+  }
+  .btn-gold:hover { opacity: 0.85; }
+  .btn-outline {
+    background: transparent; border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+  }
+  .btn-outline:hover { background: rgba(201,168,76,0.08); }
+
+  /* PIPELINE SUMMARY */
+  .pipeline {
+    padding: 24px 32px;
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  .pipe-card {
+    background: var(--dark2);
+    border-top: 2px solid transparent;
+    padding: 16px 20px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .pipe-card:hover { background: var(--dark3); }
+  .pipe-card.active { border-top-color: var(--gold); }
+
+  .pipe-card[data-filter="todos"].active { border-top-color: var(--gold); }
+  .pipe-card[data-filter="enviado"].active { border-top-color: var(--yellow); }
+  .pipe-card[data-filter="respondio"].active { border-top-color: var(--blue); }
+  .pipe-card[data-filter="negociando"].active { border-top-color: var(--purple); }
+  .pipe-card[data-filter="cerrado"].active { border-top-color: var(--green); }
+
+  .pipe-label {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pipe-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .dot-todos { background: var(--gold); }
+  .dot-enviado { background: var(--yellow); }
+  .dot-respondio { background: var(--blue); }
+  .dot-negociando { background: var(--purple); }
+  .dot-cerrado { background: var(--green); }
+
+  .pipe-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; line-height: 1; color: var(--white);
+  }
+  .pipe-value {
+    font-size: 12px; color: var(--gold); margin-top: 4px;
+  }
+
+  /* TOOLBAR */
+  .toolbar {
+    padding: 0 32px 20px;
+    display: flex; gap: 12px; align-items: center;
+  }
+
+  .search-box {
+    flex: 1; position: relative;
+  }
+  .search-box input {
+    width: 100%; background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--white); padding: 10px 16px 10px 40px;
+    font-size: 13px; font-family: 'Outfit', sans-serif;
+    outline: none; transition: border-color 0.2s;
+  }
+  .search-box input:focus { border-color: rgba(201,168,76,0.4); }
+  .search-box input::placeholder { color: var(--muted); }
+  .search-icon {
+    position: absolute; left: 14px; top: 50%;
+    transform: translateY(-50%); color: var(--muted); font-size: 14px;
+  }
+
+  /* TABLE */
+  .table-wrap {
+    padding: 0 32px 32px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%; border-collapse: collapse;
+  }
+
+  thead tr {
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  th {
+    text-align: left; padding: 12px 16px;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); font-weight: 500; white-space: nowrap;
+    cursor: pointer; user-select: none;
+  }
+  th:hover { color: var(--gold); }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: var(--dark2); }
+
+  td {
+    padding: 14px 16px; font-size: 13px; vertical-align: middle;
+  }
+
+  .prospect-info {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .prospect-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--dark3));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0; font-weight: 600;
+    color: var(--gold);
+  }
+  .prospect-handle {
+    font-weight: 500; color: var(--white);
+  }
+  .prospect-name {
+    font-size: 11px; color: var(--muted); margin-top: 2px;
+  }
+
+  .followers-badge {
+    font-size: 12px; font-weight: 500;
+    color: var(--gold);
+  }
+
+  .service-tag {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold-light);
+    padding: 4px 10px; font-size: 11px;
+    display: inline-block; white-space: nowrap;
+  }
+
+  .price-tag {
+    font-weight: 600; color: var(--white);
+    white-space: nowrap;
+  }
+
+  .status-badge {
+    padding: 4px 12px; font-size: 10px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    font-weight: 600; display: inline-block; white-space: nowrap;
+  }
+  .status-enviado { background: rgba(232,201,76,0.15); color: var(--yellow); }
+  .status-respondio { background: rgba(76,143,201,0.15); color: var(--blue); }
+  .status-negociando { background: rgba(155,76,201,0.15); color: var(--purple); }
+  .status-cerrado { background: rgba(76,175,125,0.15); color: var(--green); }
+
+  .notes-cell {
+    max-width: 200px; font-size: 12px; color: var(--muted);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  .actions-cell {
+    display: flex; gap: 8px;
+  }
+  .action-btn {
+    width: 28px; height: 28px;
+    background: var(--dark3); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; transition: background 0.2s; color: var(--white);
+  }
+  .action-btn:hover { background: rgba(201,168,76,0.2); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 500; padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--dark2);
+    border: 1px solid rgba(201,168,76,0.2);
+    width: 100%; max-width: 540px;
+    max-height: 90vh; overflow-y: auto;
+    transform: translateY(20px); transition: transform 0.25s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 2px; color: var(--gold);
+  }
+  .modal-close {
+    background: none; border: none; color: var(--muted);
+    font-size: 20px; cursor: pointer; line-height: 1;
+  }
+  .modal-close:hover { color: var(--white); }
+
+  .modal-body { padding: 24px 28px; }
+
+  .form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .form-grid .full { grid-column: 1 / -1; }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--dark3); border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white); padding: 10px 14px;
+    font-size: 13px; font-family: 'Outfit', sans-serif;
+    outline: none; transition: border-color 0.2s;
+    resize: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: rgba(201,168,76,0.5); }
+  .form-group select option { background: var(--dark3); }
+
+  .modal-footer {
+    padding: 16px 28px 24px;
+    display: flex; gap: 12px; justify-content: flex-end;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center; padding: 80px 20px;
+    color: var(--muted);
+  }
+  .empty-state p { font-size: 14px; margin-top: 12px; }
+
+  /* EXPORT TOAST */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--green); color: white;
+    padding: 12px 24px; font-size: 13px; font-weight: 500;
+    z-index: 999;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 768px) {
+    .pipeline { grid-template-columns: repeat(3, 1fr); }
+    header { padding: 16px 20px; }
+    .pipeline, .toolbar, .table-wrap { padding-left: 20px; padding-right: 20px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid .full { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-hex"></div>
+    <div class="logo-text">AZURE <span>GOLD</span></div>
+    <div class="logo-sub">CRM</div>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-outline" onclick="exportCSV()">⬇ Exportar CSV</button>
+    <button class="btn btn-gold" onclick="openModal()">+ Agregar Prospecto</button>
+  </div>
+</header>
+
+<!-- PIPELINE SUMMARY -->
+<div class="pipeline">
+  <div class="pipe-card active" data-filter="todos" onclick="filterBy('todos', this)">
+    <div class="pipe-label"><span class="pipe-dot dot-todos"></span>Total Pipeline</div>
+    <div class="pipe-num" id="count-todos">0</div>
+    <div class="pipe-value" id="value-todos">$0</div>
+  </div>
+  <div class="pipe-card" data-filter="enviado" onclick="filterBy('enviado', this)">
+    <div class="pipe-label"><span class="pipe-dot dot-enviado"></span>Enviado</div>
+    <div class="pipe-num" id="count-enviado">0</div>
+    <div class="pipe-value" id="value-enviado">$0</div>
+  </div>
+  <div class="pipe-card" data-filter="respondio" onclick="filterBy('respondio', this)">
+    <div class="pipe-label"><span class="pipe-dot dot-respondio"></span>Respondió</div>
+    <div class="pipe-num" id="count-respondio">0</div>
+    <div class="pipe-value" id="value-respondio">$0</div>
+  </div>
+  <div class="pipe-card" data-filter="negociando" onclick="filterBy('negociando', this)">
+    <div class="pipe-label"><span class="pipe-dot dot-negociando"></span>Negociando</div>
+    <div class="pipe-num" id="count-negociando">0</div>
+    <div class="pipe-value" id="value-negociando">$0</div>
+  </div>
+  <div class="pipe-card" data-filter="cerrado" onclick="filterBy('cerrado', this)">
+    <div class="pipe-label"><span class="pipe-dot dot-cerrado"></span>Cerrado ✓</div>
+    <div class="pipe-num" id="count-cerrado">0</div>
+    <div class="pipe-value" id="value-cerrado">$0</div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Buscar por nombre, handle o servicio..." oninput="renderTable()">
+  </div>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Prospecto</th>
+        <th>Seguidores</th>
+        <th>Servicio</th>
+        <th>Valor</th>
+        <th>Estado</th>
+        <th>Notas</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+  <div id="emptyState" class="empty-state" style="display:none">
+    <div style="font-size:40px">📋</div>
+    <p>No hay prospectos que coincidan con tu búsqueda.</p>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Nuevo Prospecto</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Handle Instagram</label>
+          <input type="text" id="fHandle" placeholder="@usuario">
+        </div>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="fName" placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label>Seguidores</label>
+          <input type="text" id="fFollowers" placeholder="19.4K">
+        </div>
+        <div class="form-group">
+          <label>Ubicación</label>
+          <input type="text" id="fLocation" placeholder="Miami, FL">
+        </div>
+        <div class="form-group">
+          <label>Servicio ofrecido</label>
+          <select id="fService">
+            <option value="Web Starter">Web Starter</option>
+            <option value="Web Professional">Web Professional</option>
+            <option value="Web Premium">Web Premium</option>
+            <option value="Web + Citas">Web + Citas</option>
+            <option value="Academia + Cursos">Academia + Cursos</option>
+            <option value="Proveedor + Web">Proveedor + Web</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Valor estimado ($)</label>
+          <input type="number" id="fValue" placeholder="1800">
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="fStatus">
+            <option value="enviado">Enviado</option>
+            <option value="respondio">Respondió</option>
+            <option value="negociando">Negociando</option>
+            <option value="cerrado">Cerrado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha contacto</label>
+          <input type="date" id="fDate">
+        </div>
+        <div class="form-group full">
+          <label>Notas</label>
+          <textarea id="fNotes" rows="3" placeholder="Observaciones, detalles del prospecto..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-gold" onclick="saveProspect()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let prospects = JSON.parse(localStorage.getItem('azuregold_crm') || '[]');
+  let editingId = null;
+  let currentFilter = 'todos';
+
+  // Pre-load today's prospects if empty
+  if (prospects.length === 0) {
+    const today = new Date().toISOString().split('T')[0];
+    prospects = [
+      { id: 1, handle: '@arlet_ah_studio', name: 'Arlet Uribazo', followers: '19.4K', location: 'Jacksonville, FL', service: 'Academia + Cursos', value: 1800, status: 'enviado', date: today, notes: 'Nail Artist & Educadora. AH Academy. 19.4K seguidores. Usa Beacons.' },
+      { id: 2, handle: '@sismaibeautyshop', name: 'Sismai', followers: '35.9K', location: 'Broward, FL', service: 'Web + Citas', value: 2100, status: 'enviado', date: today, notes: 'Nail Artist en Coral Square Mall. Agenda por WhatsApp. Embajadora vbeautypure.' },
+      { id: 3, handle: '@mic.nails_cl', name: 'Maryelis Castillo', followers: '133K', location: 'Puerto Montt, Chile', service: 'Academia + Cursos', value: 3500, status: 'enviado', date: today, notes: 'Academia Mic Nails. 133K. Cursos online y presenciales. Solo WhatsApp en bio.' },
+      { id: 4, handle: '@leidylans', name: 'Leidy Medina', followers: '543K', location: 'Internacional', service: 'Web Premium', value: 5000, status: 'enviado', date: today, notes: 'Mega influencer. 3 marcas: Lans Studios, Lans Products, Moi Productos. Esperar referencia.' },
+      { id: 5, handle: '@karennaails', name: 'Karen Arrieta', followers: '7.3K', location: 'Tampa, FL', service: 'Web + Citas', value: 1100, status: 'enviado', date: today, notes: 'Especialista Manicura Rusa, Builder Gel, Polygel. Solo WhatsApp.' },
+      { id: 6, handle: '@brushnailssupply', name: 'Brush Nails & Supply', followers: '32.4K', location: 'Lawrence, MA', service: 'Proveedor + Web', value: 1800, status: 'enviado', date: today, notes: 'Distribuidor top brands. Posible proveedor para nail supply. Sin tienda online.' },
+      { id: 7, handle: '@jessy_nailsartist', name: 'Jessy', followers: '790', location: 'Miami, FL', service: 'Web Starter', value: 1100, status: 'enviado', date: today, notes: 'Studio VIP elegante. Grand Opening reciente. Solo Linktree.' },
+      { id: 8, handle: '@lys.nails.st', name: 'Lys', followers: '663', location: 'Riverview, FL', service: 'Web + Citas', value: 1100, status: 'enviado', date: today, notes: '🇨🇺 Cubana. Grand Opening. Studio propio. Solo WhatsApp. Conexión paisana.' },
+      { id: 9, handle: '@jrnails_studio', name: 'Javiana Rivero', followers: '25.6K', location: 'Orlando, FL', service: 'Web Professional', value: 1800, status: 'enviado', date: today, notes: 'Venezolana. Servicios + Cursos. Verificada. Usa Beacons.' },
+      { id: 10, handle: '@leidyaragon03', name: 'Leydis Aragon', followers: '24.2K', location: 'USA', service: 'Academia + Cursos', value: 3500, status: 'enviado', date: today, notes: '🇨🇺 Cubana. Fundadora Ella Academy. Emprendedora. Stan Store. 24.2K.' },
+    ];
+    save();
+  }
+
+  function save() {
+    localStorage.setItem('azuregold_crm', JSON.stringify(prospects));
+    updatePipeline();
+    renderTable();
+  }
+
+  function updatePipeline() {
+    const statuses = ['todos', 'enviado', 'respondio', 'negociando', 'cerrado'];
+    statuses.forEach(s => {
+      const filtered = s === 'todos' ? prospects : prospects.filter(p => p.status === s);
+      const total = filtered.reduce((a, p) => a + (p.value || 0), 0);
+      document.getElementById('count-' + s).textContent = filtered.length;
+      document.getElementById('value-' + s).textContent = '$' + total.toLocaleString();
+    });
+  }
+
+  function filterBy(filter, el) {
+    currentFilter = filter;
+    document.querySelectorAll('.pipe-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    renderTable();
+  }
+
+  function renderTable() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    let filtered = currentFilter === 'todos' ? prospects : prospects.filter(p => p.status === currentFilter);
+    if (search) {
+      filtered = filtered.filter(p =>
+        p.handle.toLowerCase().includes(search) ||
+        p.name.toLowerCase().includes(search) ||
+        p.service.toLowerCase().includes(search) ||
+        (p.location || '').toLowerCase().includes(search)
+      );
+    }
+
+    const tbody = document.getElementById('tableBody');
+    const empty = document.getElementById('emptyState');
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+
+    tbody.innerHTML = filtered.map(p => `
+      <tr>
+        <td>
+          <div class="prospect-info">
+            <div class="prospect-avatar">${p.handle.charAt(1).toUpperCase()}</div>
+            <div>
+              <div class="prospect-handle">${p.handle}</div>
+              <div class="prospect-name">${p.name}${p.location ? ' · ' + p.location : ''}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="followers-badge">${p.followers}</span></td>
+        <td><span class="service-tag">${p.service}</span></td>
+        <td><span class="price-tag">$${(p.value || 0).toLocaleString()}</span></td>
+        <td><span class="status-badge status-${p.status}">${statusLabel(p.status)}</span></td>
+        <td><div class="notes-cell" title="${p.notes || ''}">${p.notes || '—'}</div></td>
+        <td>
+          <div class="actions-cell">
+            <button class="action-btn" onclick="editProspect(${p.id})" title="Editar">✏️</button>
+            <button class="action-btn" onclick="changeStatus(${p.id})" title="Cambiar estado">🔄</button>
+            <button class="action-btn" onclick="deleteProspect(${p.id})" title="Eliminar">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function statusLabel(s) {
+    const labels = { enviado: 'Enviado', respondio: 'Respondió', negociando: 'Negociando', cerrado: 'Cerrado ✓' };
+    return labels[s] || s;
+  }
+
+  function openModal(id = null) {
+    editingId = id;
+    document.getElementById('modalTitle').textContent = id ? 'Editar Prospecto' : 'Nuevo Prospecto';
+    if (id) {
+      const p = prospects.find(x => x.id === id);
+      document.getElementById('fHandle').value = p.handle;
+      document.getElementById('fName').value = p.name;
+      document.getElementById('fFollowers').value = p.followers;
+      document.getElementById('fLocation').value = p.location || '';
+      document.getElementById('fService').value = p.service;
+      document.getElementById('fValue').value = p.value;
+      document.getElementById('fStatus').value = p.status;
+      document.getElementById('fDate').value = p.date || '';
+      document.getElementById('fNotes').value = p.notes || '';
+    } else {
+      document.getElementById('fHandle').value = '';
+      document.getElementById('fName').value = '';
+      document.getElementById('fFollowers').value = '';
+      document.getElementById('fLocation').value = '';
+      document.getElementById('fService').value = 'Web Professional';
+      document.getElementById('fValue').value = '';
+      document.getElementById('fStatus').value = 'enviado';
+      document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('fNotes').value = '';
+    }
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    editingId = null;
+  }
+
+  function saveProspect() {
+    const p = {
+      id: editingId || Date.now(),
+      handle: document.getElementById('fHandle').value || '@nuevo',
+      name: document.getElementById('fName').value || 'Sin nombre',
+      followers: document.getElementById('fFollowers').value || '0',
+      location: document.getElementById('fLocation').value,
+      service: document.getElementById('fService').value,
+      value: parseInt(document.getElementById('fValue').value) || 0,
+      status: document.getElementById('fStatus').value,
+      date: document.getElementById('fDate').value,
+      notes: document.getElementById('fNotes').value,
+    };
+    if (editingId) {
+      prospects = prospects.map(x => x.id === editingId ? p : x);
+    } else {
+      prospects.push(p);
+    }
+    save();
+    closeModal();
+    showToast(editingId ? '✓ Prospecto actualizado' : '✓ Prospecto agregado');
+  }
+
+  function editProspect(id) { openModal(id); }
+
+  function deleteProspect(id) {
+    if (confirm('¿Eliminar este prospecto?')) {
+      prospects = prospects.filter(p => p.id !== id);
+      save();
+      showToast('Prospecto eliminado');
+    }
+  }
+
+  function changeStatus(id) {
+    const order = ['enviado', 'respondio', 'negociando', 'cerrado'];
+    const p = prospects.find(x => x.id === id);
+    const idx = order.indexOf(p.status);
+    p.status = order[(idx + 1) % order.length];
+    save();
+    showToast('Estado actualizado → ' + statusLabel(p.status));
+  }
+
+  function exportCSV() {
+    const headers = ['Handle', 'Nombre', 'Seguidores', 'Ubicación', 'Servicio', 'Valor', 'Estado', 'Fecha', 'Notas'];
+    const rows = prospects.map(p => [p.handle, p.name, p.followers, p.location, p.service, p.value, p.status, p.date, p.notes].map(v => `"${v || ''}"`).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'azure-gold-prospectos.csv';
+    a.click(); URL.revokeObjectURL(url);
+    showToast('✓ CSV exportado');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  updatePipeline();
+  renderTable();
+</script>
+</body>
+</html>
