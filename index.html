@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Azure Gold Studio — Paquetes para Negocios de Belleza</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<title>Azure Gold Studio — Webs para Negocios de Belleza</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -12,70 +12,62 @@
     --gold: #C9A84C;
     --gold-light: #E8C97A;
     --gold-dark: #A07830;
-    --black: #090909;
-    --dark: #111111;
-    --dark2: #1A1A1A;
-    --dark3: #222222;
-    --white: #FAFAF8;
-    --muted: #888880;
-    --accent: #2A6B8A;
+    --cream: #F5F0E8;
+    --cream2: #EDE6D6;
+    --cream3: #E4DAC6;
+    --black: #1A1410;
+    --dark: #2A2018;
+    --text: #3A2E22;
+    --muted: #8A7A6A;
+    --white: #FDFAF5;
   }
 
   html { scroll-behavior: smooth; }
 
   body {
     font-family: 'Outfit', sans-serif;
-    background: var(--black);
-    color: var(--white);
+    background: var(--cream);
+    color: var(--text);
     overflow-x: hidden;
-  }
-
-  /* GRAIN OVERLAY */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 1000; opacity: 0.4;
   }
 
   /* NAV */
   nav {
     position: fixed; top: 0; width: 100%; z-index: 900;
-    padding: 20px 60px;
+    padding: 18px 60px;
     display: flex; align-items: center; justify-content: space-between;
-    background: rgba(9,9,9,0.95);
-    border-bottom: 1px solid rgba(201,168,76,0.15);
+    background: rgba(245,240,232,0.96);
+    border-bottom: 1px solid rgba(201,168,76,0.25);
     backdrop-filter: blur(20px);
   }
 
-  .logo {
-    display: flex; align-items: center; gap: 12px;
-  }
-  .logo-icon {
-    width: 36px; height: 36px;
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-hex {
+    width: 32px; height: 32px;
     background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
+    clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
   }
   .logo-text {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px; letter-spacing: 3px;
-    color: var(--white);
+    font-size: 18px; letter-spacing: 3px; color: var(--black);
   }
   .logo-text span { color: var(--gold); }
 
-  .nav-cta {
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: var(--black);
-    padding: 10px 28px;
-    font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
-    text-transform: uppercase; border: none; cursor: pointer;
-    text-decoration: none; display: inline-block;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-    transition: opacity 0.3s;
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color 0.3s;
   }
-  .nav-cta:hover { opacity: 0.85; }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--black); color: var(--cream);
+    padding: 10px 28px; font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    border: none; cursor: pointer; text-decoration: none;
+    display: inline-block; transition: background 0.3s;
+  }
+  .nav-cta:hover { background: var(--gold-dark); }
 
   /* HERO */
   .hero {
@@ -83,149 +75,157 @@
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center;
-    padding: 120px 40px 80px;
+    padding: 140px 40px 100px;
+    background:
+      radial-gradient(ellipse at 20% 60%, rgba(201,168,76,0.1) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 30%, rgba(201,168,76,0.07) 0%, transparent 55%),
+      var(--cream);
     position: relative;
-    overflow: hidden;
   }
 
-  .hero::before {
+  .hero::after {
     content: '';
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(42,107,138,0.06) 0%, transparent 50%);
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
   }
 
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 12px;
     font-size: 11px; font-weight: 500; letter-spacing: 4px;
-    text-transform: uppercase; color: var(--gold);
-    border: 1px solid rgba(201,168,76,0.3);
+    text-transform: uppercase; color: var(--gold-dark);
+    border: 1px solid rgba(201,168,76,0.4);
     padding: 8px 20px; margin-bottom: 40px;
+    background: rgba(201,168,76,0.06);
     animation: fadeUp 0.8s ease both;
   }
-  .hero-eyebrow::before, .hero-eyebrow::after {
-    content: '◆'; font-size: 6px;
-  }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: '◆'; font-size: 6px; }
 
   .hero-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(42px, 7vw, 96px);
-    font-weight: 400; line-height: 1.05;
-    margin-bottom: 28px;
+    font-size: clamp(40px, 6vw, 88px);
+    font-weight: 300; line-height: 1.08;
+    color: var(--black); margin-bottom: 28px;
     animation: fadeUp 0.8s ease 0.15s both;
   }
-  .hero-title em {
-    font-style: italic; color: var(--gold);
-    display: block;
-  }
+  .hero-title em { font-style: italic; color: var(--gold-dark); display: block; }
 
   .hero-sub {
-    font-size: 16px; line-height: 1.8;
-    color: var(--muted); max-width: 600px;
-    font-weight: 300; margin-bottom: 56px;
+    font-size: 16px; line-height: 1.8; color: var(--muted);
+    max-width: 580px; font-weight: 300; margin-bottom: 48px;
     animation: fadeUp 0.8s ease 0.3s both;
   }
 
-  .hero-badges {
-    display: flex; flex-wrap: wrap; gap: 16px;
-    justify-content: center;
+  .hero-ctas {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
     animation: fadeUp 0.8s ease 0.45s both;
   }
+
+  .btn-primary {
+    background: var(--black); color: var(--cream);
+    padding: 16px 40px; font-size: 12px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    border: none; cursor: pointer; text-decoration: none;
+    display: inline-block; transition: background 0.3s;
+  }
+  .btn-primary:hover { background: var(--gold-dark); }
+
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    padding: 16px 40px; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    border: 1px solid rgba(58,46,34,0.3); cursor: pointer;
+    text-decoration: none; display: inline-block; transition: all 0.3s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold-dark); }
+
+  .hero-badges {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    justify-content: center; margin-top: 56px;
+    animation: fadeUp 0.8s ease 0.6s both;
+  }
   .badge {
-    padding: 10px 20px;
-    border: 1px solid rgba(201,168,76,0.2);
-    font-size: 12px; font-weight: 500; letter-spacing: 1px;
-    color: var(--muted);
-    background: rgba(201,168,76,0.04);
+    padding: 8px 18px; background: var(--cream2);
+    border: 1px solid rgba(201,168,76,0.25);
+    font-size: 12px; color: var(--muted); font-weight: 400;
   }
-  .badge span { color: var(--gold); margin-right: 6px; }
+  .badge span { color: var(--gold-dark); margin-right: 6px; }
 
-  /* GOLD LINE */
-  .gold-line {
-    width: 100%; height: 1px;
+  /* GOLD DIVIDER */
+  .divider {
+    height: 1px;
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 0;
   }
 
-  /* WHO IS IT FOR */
-  .for-section {
-    padding: 100px 60px;
-    text-align: center;
-  }
+  /* SECTIONS */
+  .section { padding: 100px 60px; }
+  .section-alt { background: var(--cream2); }
+  .section-dark { background: var(--black); color: var(--cream); }
 
   .section-label {
     font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 20px;
-    display: flex; align-items: center; justify-content: center; gap: 16px;
+    color: var(--gold-dark); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 14px;
   }
   .section-label::before, .section-label::after {
-    content: ''; display: block; width: 40px; height: 1px;
-    background: var(--gold-dark);
+    content: ''; display: block; width: 32px; height: 1px; background: var(--gold);
   }
+  .section-label.center { justify-content: center; }
 
   .section-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(32px, 4vw, 54px);
-    font-weight: 400; line-height: 1.2;
-    margin-bottom: 64px;
+    font-size: clamp(30px, 4vw, 52px);
+    font-weight: 300; line-height: 1.15; color: var(--black);
   }
+  .section-title.light { color: var(--cream); }
+  .section-title.center { text-align: center; }
 
-  .business-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+  .section-sub {
+    font-size: 15px; color: var(--muted); line-height: 1.8;
+    font-weight: 300; max-width: 560px; margin-top: 16px;
+  }
+  .section-sub.center { text-align: center; margin: 16px auto 0; }
+
+  /* FOR WHO */
+  .for-header { text-align: center; margin-bottom: 60px; }
+
+  .biz-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 2px; max-width: 1100px; margin: 0 auto;
   }
 
   .biz-card {
-    background: var(--dark2);
-    padding: 40px 28px;
-    border-top: 2px solid transparent;
-    transition: all 0.4s;
-    text-align: left;
+    background: var(--white); padding: 40px 28px;
+    border-top: 3px solid transparent;
+    transition: all 0.3s;
   }
-  .biz-card:hover {
-    background: var(--dark3);
-    border-top-color: var(--gold);
-  }
+  .biz-card:hover { border-top-color: var(--gold); transform: translateY(-4px); }
 
-  .biz-icon { font-size: 36px; margin-bottom: 20px; }
+  .biz-icon { font-size: 40px; margin-bottom: 20px; }
   .biz-name {
     font-family: 'Playfair Display', serif;
-    font-size: 20px; margin-bottom: 12px;
-    color: var(--white);
+    font-size: 20px; font-weight: 400; margin-bottom: 12px; color: var(--black);
   }
-  .biz-desc {
-    font-size: 13px; line-height: 1.7;
-    color: var(--muted); font-weight: 300;
-  }
+  .biz-desc { font-size: 13px; line-height: 1.7; color: var(--muted); font-weight: 300; }
 
   /* PACKAGES */
-  .packages {
-    padding: 100px 60px;
-    background: var(--dark);
-  }
-
-  .packages-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr 1fr;
-    gap: 2px; max-width: 1200px; margin: 64px auto 0;
+  .pkg-grid {
+    display: grid; grid-template-columns: 1fr 1.08fr 1fr;
+    gap: 2px; max-width: 1160px; margin: 64px auto 0;
     align-items: start;
   }
 
   .pkg {
-    background: var(--dark2);
-    padding: 48px 40px;
-    position: relative;
+    background: var(--white); padding: 48px 36px;
+    border: 1px solid rgba(201,168,76,0.15);
     transition: transform 0.3s;
   }
   .pkg:hover { transform: translateY(-4px); }
 
   .pkg-featured {
-    background: var(--dark3);
+    background: var(--black); color: var(--cream);
+    margin: -20px 0; padding: 68px 36px;
     border: 1px solid rgba(201,168,76,0.4);
-    margin: -24px 0;
-    padding: 72px 40px;
     position: relative; z-index: 2;
   }
 
@@ -233,363 +233,347 @@
     position: absolute; top: -14px; left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: var(--black);
-    font-size: 9px; font-weight: 700; letter-spacing: 3px;
-    text-transform: uppercase; padding: 6px 20px;
-    white-space: nowrap;
-    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    color: var(--black); font-size: 9px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 5px 20px; white-space: nowrap;
   }
 
   .pkg-tier {
     font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 16px;
+    color: var(--gold-dark); margin-bottom: 12px;
   }
+  .pkg-featured .pkg-tier { color: var(--gold-light); }
 
   .pkg-name {
     font-family: 'Playfair Display', serif;
-    font-size: 28px; font-weight: 400;
-    margin-bottom: 8px;
+    font-size: 26px; font-weight: 400; margin-bottom: 8px; color: var(--black);
   }
+  .pkg-featured .pkg-name { color: var(--cream); }
 
   .pkg-desc {
-    font-size: 13px; color: var(--muted);
-    line-height: 1.6; margin-bottom: 32px;
-    font-weight: 300;
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+    margin-bottom: 28px; font-weight: 300;
   }
+  .pkg-featured .pkg-desc { color: rgba(245,240,232,0.6); }
 
-  .pkg-price {
-    margin-bottom: 32px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .price-amount {
+  .pkg-price { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid rgba(201,168,76,0.15); }
+  .price-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 56px; color: var(--white); line-height: 1;
+    font-size: 54px; line-height: 1; color: var(--black);
   }
-  .price-amount span { font-size: 28px; color: var(--gold); }
-  .price-note {
-    font-size: 12px; color: var(--muted); margin-top: 4px;
-  }
+  .price-num sup { font-size: 28px; color: var(--gold-dark); }
+  .pkg-featured .price-num { color: var(--cream); }
+  .pkg-featured .price-num sup { color: var(--gold-light); }
+  .price-note { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .pkg-featured .price-note { color: rgba(245,240,232,0.5); }
 
-  .pkg-features { list-style: none; margin-bottom: 40px; }
+  .pkg-features { list-style: none; margin-bottom: 36px; }
   .pkg-features li {
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-size: 13px; color: rgba(250,250,248,0.75);
-    display: flex; align-items: flex-start; gap: 10px;
-    line-height: 1.4;
+    padding: 9px 0; border-bottom: 1px solid rgba(58,46,34,0.06);
+    font-size: 13px; color: var(--text);
+    display: flex; align-items: flex-start; gap: 10px; line-height: 1.4;
   }
-  .pkg-features li::before {
-    content: '✦'; color: var(--gold); font-size: 8px;
-    flex-shrink: 0; margin-top: 3px;
-  }
+  .pkg-featured .pkg-features li { color: rgba(245,240,232,0.8); border-bottom-color: rgba(245,240,232,0.06); }
+  .pkg-features li::before { content: '✦'; color: var(--gold); font-size: 8px; flex-shrink: 0; margin-top: 3px; }
   .pkg-features li.no { color: var(--muted); }
-  .pkg-features li.no::before { content: '—'; color: rgba(136,136,128,0.4); }
+  .pkg-features li.no::before { content: '—'; color: rgba(138,122,106,0.4); }
 
   .btn-pkg {
-    display: block; text-align: center;
-    padding: 16px; font-size: 11px; font-weight: 600;
-    letter-spacing: 2px; text-transform: uppercase;
-    text-decoration: none; transition: all 0.3s;
-    border: 1px solid rgba(201,168,76,0.4);
-    color: var(--gold);
+    display: block; text-align: center; padding: 14px;
+    font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; text-decoration: none;
+    border: 1px solid rgba(201,168,76,0.4); color: var(--gold-dark);
+    background: transparent; cursor: pointer; transition: all 0.3s;
+    font-family: 'Outfit', sans-serif;
   }
   .btn-pkg:hover { background: rgba(201,168,76,0.1); }
-
   .btn-pkg-gold {
     background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: var(--black); border: none;
-    font-weight: 700;
+    color: var(--black); border: none; font-weight: 700;
   }
-  .btn-pkg-gold:hover { opacity: 0.9; background: linear-gradient(135deg, var(--gold-light), var(--gold)); }
+  .btn-pkg-gold:hover { opacity: 0.9; }
 
   /* MAINTENANCE */
-  .maintenance {
-    padding: 100px 60px;
-  }
-
   .maint-grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 2px; max-width: 1100px; margin: 64px auto 0;
+    gap: 2px; max-width: 1100px; margin: 60px auto 0;
   }
 
   .maint-card {
-    background: var(--dark2); padding: 40px 36px;
-    border-top: 2px solid rgba(201,168,76,0.2);
-    transition: all 0.3s;
+    background: var(--white); padding: 40px 32px;
+    border-top: 3px solid rgba(201,168,76,0.2);
+    transition: border-top-color 0.3s;
   }
-  .maint-card:hover { border-top-color: var(--gold); background: var(--dark3); }
+  .maint-card:hover { border-top-color: var(--gold); }
+  .maint-card.featured { border-top-color: var(--gold); background: var(--cream2); }
 
-  .maint-plan {
-    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 12px;
-  }
-  .maint-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px; margin-bottom: 8px;
-  }
-  .maint-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 44px; line-height: 1;
-    margin-bottom: 4px;
-  }
-  .maint-price sup { font-size: 22px; color: var(--gold); }
+  .maint-plan { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 10px; }
+  .maint-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; margin-bottom: 6px; color: var(--black); }
+  .maint-price { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 1; color: var(--black); }
+  .maint-price sup { font-size: 22px; color: var(--gold-dark); }
   .maint-price sub { font-size: 16px; color: var(--muted); }
-  .maint-note { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .maint-note { font-size: 12px; color: var(--muted); margin-bottom: 28px; margin-top: 4px; }
+
   .maint-features { list-style: none; }
   .maint-features li {
-    padding: 8px 0; font-size: 13px; color: rgba(250,250,248,0.7);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 0; font-size: 13px; color: var(--text);
+    border-bottom: 1px solid rgba(58,46,34,0.06);
+    display: flex; gap: 10px; align-items: flex-start; line-height: 1.4;
   }
   .maint-features li::before { content: '◆'; color: var(--gold); font-size: 7px; margin-top: 4px; flex-shrink: 0; }
 
-  /* ADD-ONS */
-  .addons {
-    padding: 0 60px 100px;
-  }
-
+  /* ADDONS */
   .addons-grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 2px; max-width: 1100px; margin: 64px auto 0;
+    gap: 2px; max-width: 1100px; margin: 60px auto 0;
   }
 
   .addon-card {
-    background: var(--dark2); padding: 32px;
-    display: flex; align-items: flex-start; gap: 20px;
+    background: var(--white); padding: 28px 28px;
+    display: flex; align-items: flex-start; gap: 18px;
     transition: background 0.3s;
+    border: 1px solid rgba(201,168,76,0.1);
   }
-  .addon-card:hover { background: var(--dark3); }
+  .addon-card:hover { background: var(--cream2); }
 
   .addon-icon {
     width: 48px; height: 48px; flex-shrink: 0;
     background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.2);
+    border: 1px solid rgba(201,168,76,0.25);
     display: flex; align-items: center; justify-content: center;
     font-size: 20px;
   }
-  .addon-name {
-    font-size: 15px; font-weight: 500; margin-bottom: 6px;
-  }
+  .addon-name { font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--black); }
   .addon-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
-  .addon-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px; color: var(--gold); letter-spacing: 1px;
-  }
+  .addon-price { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold-dark); letter-spacing: 1px; }
 
   /* PROCESS */
-  .process {
-    padding: 100px 60px;
-    background: var(--dark);
-    text-align: center;
-  }
-
   .process-steps {
     display: grid; grid-template-columns: repeat(5, 1fr);
-    gap: 0; max-width: 1100px; margin: 80px auto 0;
+    gap: 0; max-width: 1100px; margin: 72px auto 0;
     position: relative;
   }
-
   .process-steps::before {
-    content: '';
-    position: absolute; top: 28px; left: 10%; right: 10%;
+    content: ''; position: absolute; top: 28px; left: 10%; right: 10%;
     height: 1px; background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
   }
 
-  .step {
-    display: flex; flex-direction: column; align-items: center;
-    padding: 0 16px;
-  }
-
+  .step { display: flex; flex-direction: column; align-items: center; padding: 0 12px; }
   .step-num {
     width: 56px; height: 56px;
-    background: var(--dark2);
-    border: 1px solid var(--gold-dark);
+    background: var(--cream2); border: 2px solid var(--gold);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px; color: var(--gold);
+    font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold-dark);
     margin-bottom: 20px; position: relative; z-index: 1;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
   }
-
-  .step-title {
-    font-size: 13px; font-weight: 600; margin-bottom: 8px; text-align: center;
-  }
+  .step-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; text-align: center; color: var(--black); }
   .step-desc { font-size: 11px; color: var(--muted); line-height: 1.6; text-align: center; }
 
-  /* CTA */
-  .cta-section {
-    padding: 120px 60px;
-    text-align: center; position: relative; overflow: hidden;
+  /* CONTACT */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; max-width: 1000px; margin: 0 auto;
+    align-items: center;
   }
 
+  .contact-info { }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 20px 0; border-bottom: 1px solid rgba(245,240,232,0.1);
+  }
+  .contact-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: rgba(201,168,76,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .contact-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 4px; }
+  .contact-value { font-size: 15px; color: var(--cream); font-weight: 400; }
+  .contact-value a { color: var(--gold-light); text-decoration: none; }
+  .contact-value a:hover { color: var(--gold); }
+
+  .contact-form { background: rgba(255,255,255,0.04); padding: 40px; border: 1px solid rgba(201,168,76,0.2); }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .form-group label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.4); }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream); padding: 10px 14px; font-size: 13px;
+    font-family: 'Outfit', sans-serif; outline: none; resize: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(201,168,76,0.6); }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(245,240,232,0.25); }
+  .form-group select option { background: var(--black); }
+
+  /* CTA SECTION */
+  .cta-section {
+    padding: 120px 60px; text-align: center;
+    background: var(--cream2); position: relative; overflow: hidden;
+  }
   .cta-section::before {
     content: 'AZURE GOLD';
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 200px; letter-spacing: -8px;
-    color: rgba(201,168,76,0.03);
+    font-family: 'Bebas Neue', sans-serif; font-size: 180px;
+    letter-spacing: -6px; color: rgba(201,168,76,0.06);
     position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap; pointer-events: none;
+    transform: translate(-50%, -50%); white-space: nowrap; pointer-events: none;
   }
-
-  .cta-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(32px, 5vw, 64px);
-    font-weight: 400; line-height: 1.2;
-    margin-bottom: 24px; position: relative;
-  }
-
-  .cta-sub {
-    font-size: 15px; color: var(--muted); max-width: 500px;
-    margin: 0 auto 48px; line-height: 1.8; font-weight: 300;
-  }
-
-  .cta-buttons {
-    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-  }
-
-  .btn-main {
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    color: var(--black); padding: 18px 48px;
-    font-size: 12px; font-weight: 700; letter-spacing: 2px;
-    text-transform: uppercase; border: none; cursor: pointer;
-    text-decoration: none;
-    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-    transition: opacity 0.3s;
-  }
-  .btn-main:hover { opacity: 0.85; }
-
-  .btn-outline {
-    border: 1px solid rgba(201,168,76,0.4); color: var(--gold);
-    padding: 18px 48px; font-size: 12px; font-weight: 500;
-    letter-spacing: 2px; text-transform: uppercase;
-    text-decoration: none; background: transparent;
-    transition: all 0.3s;
-  }
-  .btn-outline:hover { background: rgba(201,168,76,0.1); }
 
   /* FOOTER */
-  .footer-mini {
-    padding: 40px 60px;
-    border-top: 1px solid rgba(201,168,76,0.1);
+  footer {
+    background: var(--black); padding: 60px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+  }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: var(--cream); margin-bottom: 16px; }
+  .footer-logo span { color: var(--gold); }
+  .footer-desc { font-size: 13px; color: rgba(245,240,232,0.4); line-height: 1.8; margin-bottom: 24px; }
+  .footer-social { display: flex; gap: 10px; }
+  .social-btn {
+    width: 34px; height: 34px; border: 1px solid rgba(245,240,232,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; text-decoration: none; transition: all 0.3s;
+  }
+  .social-btn:hover { border-color: var(--gold); }
+  .footer-col h4 { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a { font-size: 13px; color: rgba(245,240,232,0.4); text-decoration: none; transition: color 0.3s; }
+  .footer-col ul li a:hover { color: var(--gold); }
+  .footer-bottom {
+    background: var(--black); padding: 18px 60px;
+    border-top: 1px solid rgba(245,240,232,0.05);
     display: flex; justify-content: space-between; align-items: center;
   }
-  .footer-mini p { font-size: 12px; color: var(--muted); }
-  .footer-mini a { color: var(--gold); text-decoration: none; }
+  .footer-bottom p { font-size: 11px; color: rgba(245,240,232,0.2); }
 
   /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
-  .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
     nav { padding: 16px 24px; }
-    .hero, .for-section, .packages, .maintenance, .addons, .process, .cta-section { padding-left: 24px; padding-right: 24px; }
-    .business-grid, .packages-grid, .maint-grid, .addons-grid, .process-steps { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .section { padding: 80px 24px; }
+    .biz-grid { grid-template-columns: 1fr 1fr; }
+    .pkg-grid { grid-template-columns: 1fr; }
     .pkg-featured { margin: 0; padding: 48px 32px; }
+    .maint-grid, .addons-grid { grid-template-columns: 1fr 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
     .process-steps::before { display: none; }
-    .footer-mini { flex-direction: column; gap: 16px; text-align: center; }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr 1fr; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .cta-section { padding: 80px 24px; }
   }
 
   @media (max-width: 600px) {
-    .business-grid, .maint-grid, .addons-grid, .process-steps { grid-template-columns: 1fr; }
-    .packages-grid { grid-template-columns: 1fr; }
+    .biz-grid, .maint-grid, .addons-grid, .process-steps { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <div class="logo">
-    <div class="logo-icon">⬡</div>
+    <div class="logo-hex"></div>
     <div class="logo-text">AZURE <span>GOLD</span> STUDIO</div>
   </div>
-  <a href="#contacto" class="nav-cta">Solicitar Propuesta</a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#paquetes">Paquetes</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="https://wa.me/19086774196?text=Hola,%20me%20interesa%20una%20web%20para%20mi%20negocio%20de%20belleza" class="nav-cta" target="_blank">Solicitar Propuesta</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow">Servicios para Industria de Belleza</div>
+  <div class="hero-eyebrow">Agencia Web · Negocios de Belleza Hispanos</div>
   <h1 class="hero-title">
     Tu negocio de belleza<br>
     <em>merece una web que vende</em>
   </h1>
   <p class="hero-sub">
-    Diseñamos y desarrollamos tiendas online y sitios web para nail supply, salones, barberías y beauty supply — en español, con resultados reales.
+    Diseñamos y desarrollamos tiendas online y sitios web para nail supply, salones, barberías y beauty supply — en español, con resultados reales desde el primer día.
   </p>
+  <div class="hero-ctas">
+    <a href="https://wa.me/19086774196?text=Hola,%20me%20interesa%20una%20web%20para%20mi%20negocio%20de%20belleza" class="btn-primary" target="_blank">💬 Hablar por WhatsApp</a>
+    <a href="#paquetes" class="btn-secondary">Ver Paquetes</a>
+  </div>
   <div class="hero-badges">
-    <div class="badge"><span>✦</span> WordPress + WooCommerce</div>
-    <div class="badge"><span>✦</span> En español</div>
-    <div class="badge"><span>✦</span> Entrega en 2–3 semanas</div>
-    <div class="badge"><span>✦</span> Soporte incluido</div>
-    <div class="badge"><span>✦</span> 100% lista para vender</div>
+    <div class="badge"><span>✦</span>WordPress + WooCommerce</div>
+    <div class="badge"><span>✦</span>Atención en Español</div>
+    <div class="badge"><span>✦</span>Entrega en 2–3 semanas</div>
+    <div class="badge"><span>✦</span>Soporte incluido</div>
+    <div class="badge"><span>✦</span>100% lista para vender</div>
   </div>
 </section>
 
-<div class="gold-line"></div>
+<div class="divider"></div>
 
 <!-- FOR WHO -->
-<section class="for-section">
-  <div class="section-label">¿Para quién es?</div>
-  <h2 class="section-title reveal">Trabajamos con negocios<br>de belleza como el tuyo</h2>
+<section class="section" id="servicios">
+  <div class="for-header reveal">
+    <div class="section-label center">¿Para quién es?</div>
+    <h2 class="section-title center">Trabajamos con negocios<br>de belleza como el tuyo</h2>
+    <p class="section-sub center">Si tienes un negocio de belleza y no tienes presencia online — o la que tienes no vende — somos la solución perfecta para ti.</p>
+  </div>
 
-  <div class="business-grid reveal">
+  <div class="biz-grid reveal">
     <div class="biz-card">
       <div class="biz-icon">💅</div>
       <div class="biz-name">Nail Supply</div>
-      <div class="biz-desc">Tienda online completa con catálogo, mayoreo, variantes de color y sistema de pedidos automatizado.</div>
+      <div class="biz-desc">Tienda online completa con catálogo, sistema de mayoreo, variantes de color y pedidos automatizados. Tus clientes compran desde casa, tú ganas sin estar pendiente.</div>
     </div>
     <div class="biz-card">
       <div class="biz-icon">💇‍♀️</div>
       <div class="biz-name">Salones de Belleza</div>
-      <div class="biz-desc">Web con sistema de reservas online, galería de servicios, precios y reseñas de clientes integradas.</div>
+      <div class="biz-desc">Web profesional con sistema de reservas online, galería de servicios, precios y reseñas de clientes. Tus clientas reservan solas a cualquier hora.</div>
     </div>
     <div class="biz-card">
       <div class="biz-icon">✂️</div>
-      <div class="biz-name">Barberías</div>
-      <div class="biz-desc">Página profesional con booking online, menú de servicios, fotos del trabajo y manejo de turnos.</div>
+      <div class="biz-name">Nail Artists & Academias</div>
+      <div class="biz-desc">Plataforma para vender cursos online, gestionar inscripciones y mostrar tu portafolio. Convierte tus seguidores en alumnas que pagan automáticamente.</div>
     </div>
     <div class="biz-card">
       <div class="biz-icon">🛍️</div>
       <div class="biz-name">Beauty Supply</div>
-      <div class="biz-desc">E-commerce con inventario amplio, sistema de búsqueda, filtros por marca y programa de puntos.</div>
+      <div class="biz-desc">E-commerce con inventario amplio, sistema de búsqueda, filtros por marca y programa de puntos. Vende online sin límite geográfico.</div>
     </div>
   </div>
 </section>
 
-<div class="gold-line"></div>
+<div class="divider"></div>
 
 <!-- PACKAGES -->
-<section class="packages">
-  <div style="text-align:center;">
-    <div class="section-label">Nuestros Paquetes</div>
-    <h2 class="section-title reveal">Elige el plan<br>perfecto para ti</h2>
+<section class="section section-alt" id="paquetes">
+  <div class="reveal" style="text-align:center">
+    <div class="section-label center">Nuestros Paquetes</div>
+    <h2 class="section-title center">Elige el plan<br>perfecto para ti</h2>
+    <p class="section-sub center">Tres opciones claras según el tamaño y las necesidades de tu negocio. Sin sorpresas, sin costos ocultos.</p>
   </div>
 
-  <div class="packages-grid reveal">
-
-    <!-- STARTER -->
+  <div class="pkg-grid reveal">
     <div class="pkg">
       <div class="pkg-tier">Paquete 01</div>
       <div class="pkg-name">Starter</div>
       <div class="pkg-desc">Para negocios que están arrancando y necesitan presencia online rápida y profesional.</div>
       <div class="pkg-price">
-        <div class="price-amount"><span>$</span>800</div>
+        <div class="price-num"><sup>$</sup>800</div>
         <div class="price-note">Pago único · Entrega en 10–14 días</div>
       </div>
       <ul class="pkg-features">
         <li>WordPress + WooCommerce instalado</li>
         <li>Tema profesional configurado</li>
         <li>Hasta 20 productos subidos</li>
-        <li>5 páginas (Home, Shop, Contacto, Nosotros, FAQ)</li>
+        <li>5 páginas principales</li>
         <li>Stripe + PayPal conectados</li>
         <li>Formulario de contacto</li>
         <li>SSL + hosting configurado</li>
@@ -598,95 +582,90 @@
         <li class="no">Blog SEO</li>
         <li class="no">Programa mayoreo</li>
       </ul>
-      <a href="#contacto" class="btn-pkg">Solicitar Starter</a>
+      <a href="https://wa.me/19086774196?text=Hola,%20me%20interesa%20el%20Paquete%20Starter%20de%20$800" class="btn-pkg" target="_blank">Solicitar Starter</a>
     </div>
 
-    <!-- PRO - FEATURED -->
     <div class="pkg pkg-featured">
       <div class="pkg-tag">Más Popular</div>
       <div class="pkg-tier">Paquete 02</div>
       <div class="pkg-name">Professional</div>
       <div class="pkg-desc">La opción completa para negocios que quieren vender en serio desde el primer día.</div>
       <div class="pkg-price">
-        <div class="price-amount"><span>$</span>1,800</div>
+        <div class="price-num"><sup>$</sup>1,800</div>
         <div class="price-note">Pago único · Entrega en 14–21 días</div>
       </div>
       <ul class="pkg-features">
         <li>Todo lo del Starter +</li>
         <li>Diseño visual personalizado</li>
         <li>Hasta 100 productos subidos</li>
-        <li>Programa de mayoreo / precios por volumen</li>
+        <li>Programa de mayoreo incluido</li>
         <li>Blog configurado para SEO</li>
         <li>Google Analytics + Facebook Pixel</li>
         <li>Chat de WhatsApp integrado</li>
-        <li>Lista de deseos + comparar productos</li>
         <li>Cupones y descuentos</li>
         <li>Página de mayoreo + formulario B2B</li>
         <li>Capacitación completa (3 horas)</li>
-        <li>30 días de soporte post-lanzamiento</li>
+        <li>30 días de soporte incluido</li>
       </ul>
-      <a href="#contacto" class="btn-pkg btn-pkg-gold">Solicitar Professional</a>
+      <a href="https://wa.me/19086774196?text=Hola,%20me%20interesa%20el%20Paquete%20Professional%20de%20$1800" class="btn-pkg btn-pkg-gold" target="_blank">Solicitar Professional</a>
     </div>
 
-    <!-- PREMIUM -->
     <div class="pkg">
       <div class="pkg-tier">Paquete 03</div>
       <div class="pkg-name">Premium</div>
       <div class="pkg-desc">Para negocios establecidos que quieren escalar y automatizar su operación online.</div>
       <div class="pkg-price">
-        <div class="price-amount"><span>$</span>3,500</div>
+        <div class="price-num"><sup>$</sup>3,500</div>
         <div class="price-note">Pago único · Entrega en 3–4 semanas</div>
       </div>
       <ul class="pkg-features">
         <li>Todo lo del Professional +</li>
+        <li>Sistema de citas online incluido</li>
         <li>Productos ilimitados</li>
-        <li>Sistema de citas online incluido ($300 valor)</li>
         <li>Sistema de afiliados / referidos</li>
+        <li>Automatización de emails</li>
         <li>Integración con ShipStation</li>
-        <li>Automatización de emails (Klaviyo)</li>
-        <li>Sistema de reseñas avanzado</li>
-        <li>Página de afiliadas / nail techs</li>
         <li>Optimización SEO completa</li>
-        <li>Velocidad avanzada (WP Rocket)</li>
-        <li>Dominio + hosting primer año incluido</li>
+        <li>Dominio + hosting primer año</li>
         <li>Capacitación extendida (5 horas)</li>
-        <li>60 días de soporte post-lanzamiento</li>
+        <li>60 días de soporte incluido</li>
       </ul>
-      <a href="#contacto" class="btn-pkg">Solicitar Premium</a>
+      <a href="https://wa.me/19086774196?text=Hola,%20me%20interesa%20el%20Paquete%20Premium%20de%20$3500" class="btn-pkg" target="_blank">Solicitar Premium</a>
     </div>
-
   </div>
 </section>
 
+<div class="divider"></div>
+
 <!-- MAINTENANCE -->
-<section class="maintenance" id="mantenimiento">
-  <div style="text-align:center;">
-    <div class="section-label">Mantenimiento Mensual</div>
-    <h2 class="section-title reveal">Tu tienda siempre<br>funcionando perfecta</h2>
+<section class="section">
+  <div class="reveal" style="text-align:center">
+    <div class="section-label center">Mantenimiento Mensual</div>
+    <h2 class="section-title center">Tu web siempre<br>funcionando perfecta</h2>
+    <p class="section-sub center">Una vez lanzada tu web, nos encargamos de mantenerla actualizada, segura y optimizada para que tú te enfoques en tu negocio.</p>
   </div>
 
   <div class="maint-grid reveal">
     <div class="maint-card">
-      <div class="maint-plan">Plan 01</div>
-      <div class="maint-name">Básico</div>
+      <div class="maint-plan">Plan Básico</div>
+      <div class="maint-name">Esencial</div>
       <div class="maint-price"><sup>$</sup>79<sub>/mes</sub></div>
       <div class="maint-note">Para tiendas recién lanzadas</div>
       <ul class="maint-features">
         <li>Actualizaciones de WordPress y plugins</li>
         <li>Backup semanal automático</li>
-        <li>Monitoreo de seguridad</li>
+        <li>Monitoreo de seguridad 24/7</li>
         <li>Soporte por WhatsApp</li>
         <li>Reporte mensual básico</li>
       </ul>
     </div>
-
-    <div class="maint-card" style="border-top-color: var(--gold);">
-      <div class="maint-plan">Plan 02</div>
-      <div class="maint-name">Estándar</div>
+    <div class="maint-card featured">
+      <div class="maint-plan">Plan Estándar</div>
+      <div class="maint-name">Crecimiento</div>
       <div class="maint-price"><sup>$</sup>179<sub>/mes</sub></div>
-      <div class="maint-note">El más solicitado</div>
+      <div class="maint-note">El más solicitado ⭐</div>
       <ul class="maint-features">
-        <li>Todo el Plan Básico +</li>
+        <li>Todo el Plan Esencial +</li>
         <li>Hasta 3 cambios de contenido al mes</li>
         <li>Subir hasta 10 productos nuevos</li>
         <li>Reporte de ventas y tráfico</li>
@@ -694,10 +673,9 @@
         <li>Soporte prioritario</li>
       </ul>
     </div>
-
     <div class="maint-card">
-      <div class="maint-plan">Plan 03</div>
-      <div class="maint-name">Premium</div>
+      <div class="maint-plan">Plan Premium</div>
+      <div class="maint-name">Escalamiento</div>
       <div class="maint-price"><sup>$</sup>349<sub>/mes</sub></div>
       <div class="maint-note">Para tiendas de alto volumen</div>
       <ul class="maint-features">
@@ -713,19 +691,30 @@
   </div>
 </section>
 
-<!-- ADD-ONS -->
-<section class="addons">
-  <div style="text-align:center;">
-    <div class="section-label">Servicios Adicionales</div>
-    <h2 class="section-title reveal">Potencia tu tienda<br>con extras</h2>
+<div class="divider"></div>
+
+<!-- ADDONS -->
+<section class="section section-alt">
+  <div class="reveal" style="text-align:center">
+    <div class="section-label center">Servicios Adicionales</div>
+    <h2 class="section-title center">Potencia tu web<br>con extras</h2>
+    <p class="section-sub center">Servicios complementarios que puedes agregar a cualquier paquete para llevar tu presencia online al siguiente nivel.</p>
   </div>
 
   <div class="addons-grid reveal">
     <div class="addon-card">
+      <div class="addon-icon">📅</div>
+      <div>
+        <div class="addon-name">Sistema de Citas Online</div>
+        <div class="addon-desc">Tus clientes reservan solas a cualquier hora. Confirmaciones automáticas, recordatorios y panel de gestión incluidos.</div>
+        <div class="addon-price">$300 — pago único</div>
+      </div>
+    </div>
+    <div class="addon-card">
       <div class="addon-icon">🎨</div>
       <div>
-        <div class="addon-name">Logo Profesional</div>
-        <div class="addon-desc">Diseño de identidad visual completa para tu marca de nail supply.</div>
+        <div class="addon-name">Logo & Identidad Visual</div>
+        <div class="addon-desc">Diseño de logo profesional y paleta de colores para que tu marca se vea consistente en todos lados.</div>
         <div class="addon-price">Desde $150</div>
       </div>
     </div>
@@ -733,23 +722,15 @@
       <div class="addon-icon">📱</div>
       <div>
         <div class="addon-name">Setup TikTok + Bio Link</div>
-        <div class="addon-desc">Configuración de perfil TikTok profesional con página de bio link personalizada.</div>
+        <div class="addon-desc">Perfil TikTok profesional con página de bio link personalizada para convertir seguidores en clientes.</div>
         <div class="addon-price">$200</div>
-      </div>
-    </div>
-    <div class="addon-card">
-      <div class="addon-icon">📅</div>
-      <div>
-        <div class="addon-name">Sistema de Citas Online</div>
-        <div class="addon-desc">Calendario de reservas integrado a tu web. El cliente elige día y hora solo — sin llamadas ni WhatsApp. Confirmaciones automáticas incluidas. Pago único, sin mensualidad.</div>
-        <div class="addon-price">$300 — pago único</div>
       </div>
     </div>
     <div class="addon-card">
       <div class="addon-icon">📦</div>
       <div>
-        <div class="addon-name">Subida masiva de productos</div>
-        <div class="addon-desc">Importamos tu catálogo completo con fotos, descripciones y precios.</div>
+        <div class="addon-name">Subida Masiva de Productos</div>
+        <div class="addon-desc">Importamos tu catálogo completo con fotos, descripciones y precios listos para vender.</div>
         <div class="addon-price">$150 por 50 productos</div>
       </div>
     </div>
@@ -757,83 +738,194 @@
       <div class="addon-icon">📧</div>
       <div>
         <div class="addon-name">Email Marketing Setup</div>
-        <div class="addon-desc">Configuramos Klaviyo o Mailchimp con secuencias automáticas de bienvenida y carrito abandonado.</div>
+        <div class="addon-desc">Configuramos secuencias automáticas de bienvenida y carrito abandonado para recuperar ventas.</div>
         <div class="addon-price">$300</div>
-      </div>
-    </div>
-    <div class="addon-card">
-      <div class="addon-icon">🔍</div>
-      <div>
-        <div class="addon-name">Auditoría SEO</div>
-        <div class="addon-desc">Análisis completo de tu tienda con plan de acción para aparecer en Google.</div>
-        <div class="addon-price">$199</div>
       </div>
     </div>
     <div class="addon-card">
       <div class="addon-icon">🏪</div>
       <div>
         <div class="addon-name">Google My Business</div>
-        <div class="addon-desc">Perfil verificado y optimizado para aparecer en búsquedas locales de tu ciudad.</div>
+        <div class="addon-desc">Perfil verificado y optimizado para aparecer en búsquedas locales de tu ciudad en Google Maps.</div>
         <div class="addon-price">$99</div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="gold-line"></div>
+<div class="divider"></div>
 
 <!-- PROCESS -->
-<section class="process">
-  <div class="section-label">Cómo trabajamos</div>
-  <h2 class="section-title reveal">Tu tienda lista en<br>3 semanas o menos</h2>
+<section class="section" id="proceso">
+  <div class="reveal" style="text-align:center">
+    <div class="section-label center">Cómo trabajamos</div>
+    <h2 class="section-title center">Tu web lista en<br>3 semanas o menos</h2>
+    <p class="section-sub center">Un proceso simple, transparente y 100% en español para que nunca te sientas perdida.</p>
+  </div>
 
   <div class="process-steps reveal">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-title">Consulta Gratis</div>
-      <div class="step-desc">Hablamos de tu negocio, tus metas y qué necesitas exactamente.</div>
+      <div class="step-desc">Hablamos de tu negocio, tus metas y qué necesitas exactamente. Sin compromiso.</div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-title">Propuesta</div>
-      <div class="step-desc">Te enviamos una propuesta detallada con precios y tiempos claros.</div>
+      <div class="step-desc">Te enviamos una propuesta detallada con precios y tiempos claros antes de empezar.</div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-title">Diseño</div>
-      <div class="step-desc">Creamos el diseño visual de tu tienda y lo apruebas antes de programar.</div>
+      <div class="step-desc">Creamos el diseño visual de tu web y tú lo apruebas antes de que programemos nada.</div>
     </div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-title">Desarrollo</div>
-      <div class="step-desc">Construimos todo en WordPress con WooCommerce y conectamos pagos.</div>
+      <div class="step-desc">Construimos todo en WordPress con WooCommerce y conectamos tus métodos de pago.</div>
     </div>
     <div class="step">
       <div class="step-num">5</div>
       <div class="step-title">¡Lanzamos!</div>
-      <div class="step-desc">Te capacitamos, hacemos pruebas finales y abrimos tu tienda al mundo.</div>
+      <div class="step-desc">Te capacitamos, hacemos pruebas finales y abrimos tu tienda al mundo juntas.</div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section" id="contacto">
-  <h2 class="cta-title reveal">¿Lista para tener<br>tu tienda online?</h2>
-  <p class="cta-sub reveal">Hablamos por WhatsApp, te damos una consulta gratis y te decimos exactamente cuánto cuesta y cuándo está lista tu tienda.</p>
-  <div class="cta-buttons reveal">
-    <a href="https://wa.me/1XXXXXXXXXX?text=Hola,%20me%20interesa%20una%20tienda%20online%20para%20mi%20negocio%20de%20belleza" class="btn-main">💬 Escribir por WhatsApp</a>
-    <a href="/cdn-cgi/l/email-protection#9ef6f1f2ffdeffe4ebecfbf9f1f2faedeaebfaf7f1b0fdf1f3" class="btn-outline">📧 Enviar Email</a>
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section class="section section-dark" id="contacto">
+  <div class="reveal" style="text-align:center; margin-bottom:60px">
+    <div class="section-label center" style="color:var(--gold-light)">Hablemos</div>
+    <h2 class="section-title light center">¿Lista para tener<br>tu web que vende?</h2>
+    <p class="section-sub center" style="color:rgba(245,240,232,0.5)">Consulta gratis, sin compromiso. Te respondemos en menos de 24 horas.</p>
+  </div>
+
+  <div class="contact-grid reveal">
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="contact-icon">💬</div>
+        <div>
+          <div class="contact-label">WhatsApp</div>
+          <div class="contact-value"><a href="https://wa.me/19086774196" target="_blank">(908) 677-4196</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:azuregoldstudio@gmail.com">azuregoldstudio@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Ubicación</div>
+          <div class="contact-value">New Jersey, USA · Servicio remoto a todo el país</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-label">Horario</div>
+          <div class="contact-value">Lunes a Sábado · 9am – 7pm EST</div>
+        </div>
+      </div>
+      <div style="margin-top:32px">
+        <a href="https://wa.me/19086774196?text=Hola,%20me%20interesa%20una%20web%20para%20mi%20negocio%20de%20belleza.%20%C2%BFPodemos%20hablar?" class="btn-primary" target="_blank" style="display:inline-block">💬 Escribir por WhatsApp ahora</a>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div style="font-family:'Playfair Display',serif; font-size:22px; color:var(--cream); margin-bottom:24px; font-weight:300;">Cuéntanos sobre<br><em style="color:var(--gold-light)">tu negocio</em></div>
+      <div class="form-group">
+        <label>Tu nombre</label>
+        <input type="text" placeholder="María García">
+      </div>
+      <div class="form-group">
+        <label>Tipo de negocio</label>
+        <select>
+          <option>Nail Supply</option>
+          <option>Salón de belleza</option>
+          <option>Nail Artist / Academia</option>
+          <option>Beauty Supply</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Paquete de interés</label>
+        <select>
+          <option>Starter — $800</option>
+          <option>Professional — $1,800</option>
+          <option>Premium — $3,500</option>
+          <option>No estoy segura aún</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea rows="3" placeholder="Cuéntame sobre tu negocio y qué necesitas..."></textarea>
+      </div>
+      <a href="mailto:azuregoldstudio@gmail.com" class="btn-pkg btn-pkg-gold" style="display:block;text-align:center;padding:14px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:pointer;">Enviar Mensaje ✦</a>
+    </div>
   </div>
 </section>
 
-<div class="footer-mini">
-  <p>© 2025 <a href="#">Azure Gold Studio</a> — Agencia de Desarrollo Web para Negocios Hispanos</p>
-  <p>NJ / NY · Atención en <a href="#">Español</a> · <a href="#">Instagram</a> · <a href="#">TikTok</a></p>
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">AZURE <span>GOLD</span> STUDIO</div>
+    <p class="footer-desc">Agencia web especializada en negocios de belleza hispanos en USA. Webs que venden, en español, con resultados reales.</p>
+    <div class="footer-social">
+      <a href="#" class="social-btn">📸</a>
+      <a href="#" class="social-btn">🎵</a>
+      <a href="https://wa.me/19086774196" class="social-btn" target="_blank">💬</a>
+    </div>
+  </div>
+  <div class="footer-col">
+    <h4>Servicios</h4>
+    <ul>
+      <li><a href="#paquetes">Paquete Starter</a></li>
+      <li><a href="#paquetes">Paquete Professional</a></li>
+      <li><a href="#paquetes">Paquete Premium</a></li>
+      <li><a href="#paquetes">Mantenimiento</a></li>
+      <li><a href="#paquetes">Add-ons</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Industrias</h4>
+    <ul>
+      <li><a href="#servicios">Nail Supply</a></li>
+      <li><a href="#servicios">Salones</a></li>
+      <li><a href="#servicios">Nail Academias</a></li>
+      <li><a href="#servicios">Beauty Supply</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Contacto</h4>
+    <ul>
+      <li><a href="https://wa.me/19086774196" target="_blank">(908) 677-4196</a></li>
+      <li><a href="mailto:azuregoldstudio@gmail.com">azuregoldstudio@gmail.com</a></li>
+      <li><a href="#proceso">Cómo trabajamos</a></li>
+      <li><a href="#contacto">Solicitar propuesta</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2026 Azure Gold Studio · New Jersey, USA</p>
+  <p>Hecho con 💛 para la comunidad hispana</p>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        setTimeout(() => entry.targe
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
