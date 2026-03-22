@@ -899,7 +899,12 @@
 <script>
   function toggleChat() {
     const box = document.getElementById('chat-box');
-    box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+    if (box.style.display === 'flex') {
+      box.style.display = 'none';
+    } else {
+      box.style.display = 'flex';
+      box.style.flexDirection = 'column';
+    }
   }
 
   async function sendChat() {
