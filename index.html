@@ -455,9 +455,46 @@
   .reveal.visible { opacity: 1; transform: translateY(0); }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
 
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--black); transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 64px; left: 0; right: 0;
+    background: rgba(245,240,232,0.98); backdrop-filter: blur(20px);
+    z-index: 899; padding: 24px 32px 32px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu ul { list-style: none; }
+  .mobile-menu ul li { border-bottom: 1px solid rgba(201,168,76,0.1); }
+  .mobile-menu ul li a {
+    display: block; padding: 16px 0;
+    font-size: 15px; font-weight: 500; color: var(--text);
+    text-decoration: none; transition: color 0.3s;
+  }
+  .mobile-menu ul li a:hover { color: var(--gold-dark); }
+  .mobile-cta {
+    background: var(--black) !important; color: var(--cream) !important;
+    padding: 14px 24px !important; margin-top: 16px;
+    text-align: center; font-size: 12px !important;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+
   @media (max-width: 1024px) {
     nav { padding: 16px 24px; }
     .nav-links { display: none; }
+    .hamburger { display: flex; }
     .section { padding: 80px 24px; }
     .biz-grid { grid-template-columns: 1fr 1fr; }
     .pkg-grid { grid-template-columns: 1fr; }
@@ -493,7 +530,22 @@
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <a href="https://wa.me/19086774196?text=Hola,%20me%20interesa%20una%20web%20para%20mi%20negocio%20de%20belleza" class="nav-cta" target="_blank">Solicitar Propuesta</a>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#servicios" onclick="toggleMenu()">Belleza</a></li>
+    <li><a href="appointmentsday.html">AppointmentsDay</a></li>
+    <li><a href="https://fitcrm-landing.vercel.app" target="_blank">FitCRM Pro</a></li>
+    <li><a href="#proceso" onclick="toggleMenu()">Proceso</a></li>
+    <li><a href="#contacto" onclick="toggleMenu()">Contacto</a></li>
+    <li><a href="https://wa.me/19086774196?text=Hola,%20me%20interesa%20una%20web%20para%20mi%20negocio%20de%20belleza" target="_blank" class="mobile-cta">Solicitar Propuesta</a></li>
+  </ul>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -977,5 +1029,22 @@
   <button onclick="toggleChat()" style="width:56px;height:56px;background:linear-gradient(135deg,#C9A84C,#A07830);border:none;border-radius:50%;cursor:pointer;font-size:24px;box-shadow:0 4px 20px rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;margin-left:auto">💬</button>
 </div>
 
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.querySelector('.hamburger');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+  // Close menu on outside click
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.querySelector('.hamburger');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('open');
+      btn.classList.remove('open');
+    }
+  });
+</script>
 </body>
 </html>
