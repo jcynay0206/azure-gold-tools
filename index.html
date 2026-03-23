@@ -512,6 +512,11 @@
     .biz-grid, .maint-grid, .addons-grid, .process-steps { grid-template-columns: 1fr; }
     footer { grid-template-columns: 1fr; }
   }
+
+  .chat-open {
+    display: flex !important;
+    flex-direction: column !important;
+  }
 </style>
 </head>
 <body>
@@ -974,12 +979,7 @@
 <script>
   function toggleChat() {
     const box = document.getElementById('chat-box');
-    if (box.style.display === 'flex') {
-      box.style.display = 'none';
-    } else {
-      box.style.display = 'flex';
-      box.style.flexDirection = 'column';
-    }
+    box.classList.toggle('chat-open');
   }
 
   async function sendChat() {
